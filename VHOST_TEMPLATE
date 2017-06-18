@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+  ServerName ${DOMAIN}
+  ServerAlias www.${DOMAIN}
+  ServerAdmin marek@trunkat.eu
+  DocumentRoot /var/www/${DOMAIN}/web
+
+  ErrorLog /var/log/apache2/${DOMAIN}_error.log
+  CustomLog /var/log/apache2/${DOMAIN}_access.log combined
+  CustomLog /var/log/apache2/access.log combined
+  LogLevel warn
+
+  <Directory />
+    Order Deny,Allow
+    Deny from all
+    Options None
+    AllowOverride None
+  </Directory>
+
+  <Directory /var/www/${DOMAIN}/>
+    Options -Indexes -Includes -ExecCGI +FollowSymLinks +MultiViews
+    AllowOverride all
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  php_value newrelic.appname "${DOMAIN}"
+</VirtualHost>
